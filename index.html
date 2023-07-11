@@ -1,57 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Responsive Login Form</title>
-  <link href="static/css/css.css" rel="stylesheet">
+{{ define "main" }}
+    {{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+    {{ $notHidden := where .Site.RegularPages "Params.hidden" "!=" true }}
+    {{ $filtered := ($pages | intersect $notHidden) }}
+    {{ $pag := .Paginate ($filtered) }}
 
+    <section class="article-list">
+        {{ range $index, $element := $pag.Pages }}
+            {{ partial "article-list/default" . }}
+        {{ end }}
+    </section>
 
-<link href="static/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"><link rel="stylesheet" href="static/css/style.css">
+    {{- partial "pagination.html" . -}}
+    {{- partial "footer/footer" . -}}
+{{ end }}
 
-</head>
-<body>
-<!-- partial:index.partial.html -->
-<div class="box-form">
-	<div class="left">
-		<div class="overlay">
-		<h1>血染大橘子.</h1>
-		<p>病人</p>
-		<span>
-			<p></p>
-			<a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-			<a href="#"><i class="fa fa-twitter" aria-hidden="true"></i> </a>
-		</span>
-		</div>
-	</div>
-
-
-​	
-		<div class="right">
-		<h5>Login</h5>
-		<p>Don't have an account? <a href="#">Creat Your Account</a> it takes less than a minute</p>
-		<div class="inputs">
-			<input type="text" placeholder="user name">
-			<br>
-			<input type="password" placeholder="password">
-		</div>
-			
-			<br><br>
-			
-		<div class="remember-me--forget-password">
-				<!-- Angular -->
-	<label>
-		<input type="checkbox" name="item" checked/="">
-		<span class="text-checkbox">Remember me</span>
-	</label>
-			<p>forget password?</p>
-		</div>
-			
-			<br>
-			<button>Login</button>
-	</div>
-
-</div>
-<!-- partial -->
-
-</body>
-</html>
+{{ define "right-sidebar" }}
+    {{ partial "sidebar/right.html" (dict "Context" . "Scope" "homepage") }}
+{{ end }}
